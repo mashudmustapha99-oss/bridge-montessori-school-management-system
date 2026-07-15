@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Profile</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .profile-card,
+        .payment-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .profile-card h2,
+        .payment-card h2 {
+            color: #007bff;
+        }
+
+        .info {
+            margin: 12px 0;
+            font-size: 18px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: white;
+            background: #007bff;
+            padding: 12px 20px;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Student Profile</h1>
+    </div>
+
+    <div class="container">
+
+        <a href="/students" class="back-btn">← Back to Students</a>
+
+        <div class="profile-card">
+            <h2>
+    {{ student.first_name }} {{ student.last_name }} {{ student.middle_name or '' }}
+   
+   
+</h2>
+
+            <div class="info"><strong>Student ID:</strong> {{ student.student_id }}</div>
+            <div class="info"><strong>Class:</strong> {{ student.student_class }}</div>
+            <div class="info"><strong>Gender:</strong> {{ student.gender }}</div>
+            <div class="info"><strong>Parent Contact:</strong> {{ student.parent_contact }}</div>
+            <div class="info"><strong>Total Payment Made:</strong> GHS {{ total_paid }}</div>
+            <div class="info"><strong>Outstanding Balance:</strong> GHS {{ total_balance }}</div>
+        </div>
+
+        <div class="payment-card">
+            <h2>Payment History</h2>
+
+            <table>
+                <tr>
+                    <th>Receipt Number</th>
+                    <th>Amount Paid</th>
+                </tr>
+
+                {% for fee in fees %}
+                <tr>
+                    <td>{{ fee.receipt_number }}</td>
+                    <td>GHS {{ fee.amount_paid }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Bridge Montessori School Official Receipt</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+    margin:0;
+    padding:0;
+}
+
+.buttons{
+    text-align:center;
+    margin:15px;
+}
+
+.btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:5px;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+    margin:4px;
+    text-decoration:none;
+}
+
+.print{
+    background:#28a745;
+}
+
+.back{
+    background:#007bff;
+}
+
+.receipt{
+    width:790px;
+    margin:auto;
+    background:white;
+    padding:18px;
+    border-radius:8px;
+    box-shadow:0 0 8px rgba(0,0,0,.15);
+}
+
+.school-header{
+    display:flex;
+    align-items:center;
+    border-bottom:3px solid #0056b3;
+    padding-bottom:8px;
+    margin-bottom:10px;
+}
+
+.logo{
+    width:75px;
+    margin-right:15px;
+}
+
+.school-info{
+    flex:1;
+    text-align:center;
+}
+
+.school-info h1{
+    margin:0;
+    color:#0056b3;
+    font-size:26px;
+}
+
+.school-info h3{
+    margin:2px;
+    color:#444;
+    font-size:17px;
+}
+
+.school-info p{
+    margin:1px;
+    font-size:12px;
+}
+
+.receipt-title{
+    text-align:center;
+    margin-top:8px;
+    margin-bottom:10px;
+}
+
+.receipt-title h2{
+    margin:0;
+    color:#0056b3;
+    font-size:22px;
+}
+
+.receipt-title p{
+    margin-top:4px;
+    color:#666;
+    font-size:13px;
+}
+
+.section-title{
+    background:#0056b3;
+    color:white;
+    padding:6px;
+    font-size:15px;
+    margin-top:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td{
+    padding:6px;
+    border-bottom:1px solid #ddd;
+    font-size:14px;
+}
+
+td:first-child{
+    font-weight:bold;
+    width:40%;
+}
+
+.summary{
+    border:2px solid #0056b3;
+    background:#eef6ff;
+    margin-top:8px;
+}
+
+.signature{
+    margin-top:18px;
+}
+
+.footer{
+    margin-top:10px;
+    text-align:center;
+    font-size:13px;
+}
+
+@page{
+    size:A4;
+    margin:8mm;
+}
+
+@media print{
+
+.buttons{
+display:none;
+}
+
+body{
+background:white;
+}
+
+.receipt{
+width:100%;
+box-shadow:none;
+padding:10px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="buttons">
+
+<button class="btn print" onclick="window.print()">
+🖨 Print Receipt
+</button>
+
+<a href="{{ url_for('auth.add_fee') }}" class="btn back">
+➕ New Payment
+</a>
+
+</div>
+
+<div class="receipt">
+
+<div class="school-header">
+
+<img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+
+<div class="school-info">
+
+<h1>BRIDGE MONTESSORI SCHOOL</h1>
+
+<h3>ACHIEVING MORE</h3>
+
+<p>P.O Box KS 16299, Adum-Kumasi</p>
+
+<p>Domeabra, Ghana</p>
+
+<p>Tel: 054 219 0000</p>
+
+<p>Email: bridge.montessori@yahoo.com</p>
+
+<p>Website: bridgemontessorisch-gh.simdif.com</p>
+
+</div>
+
+</div>
+
+<div class="receipt-title">
+
+<h2>OFFICIAL SCHOOL FEE RECEIPT</h2>
+
+<p>Thank you for choosing Bridge Montessori School.</p>
+
+</div>
+
+<div class="section-title">
+Receipt Information
+</div>
+
+<table>
+
+<tr>
+<td>Receipt Number</td>
+<td>{{ fee.receipt_number }}</td>
+</tr>
+
+<tr>
+<td>Academic Year</td>
+<td>{{ fee.academic_year }}</td>
+</tr>
+
+<tr>
+<td>Payment Date</td>
+<td>{{ fee.payment_date.strftime("%d/%m/%Y") }}</td>
+</tr>
+
+<tr>
+<td>Payment Time</td>
+<td>{{ fee.payment_date.strftime("%I:%M %p") }}</td>
+</tr>
+
+</table>
+
+<div class="section-title">
+Student Information
+</div>
+
+<table>
+
+<tr>
+<td>Student ID</td>
+<td>{{ student.student_id }}</td>
+</tr>
+
+<tr>
+<td>Student Name</td>
+<td>{{ student.first_name }} {{ student.middle_name or "" }} {{ student.last_name }}</td>
+</tr>
+
+<tr>
+<td>Class</td>
+<td>{{ student.student_class }}</td>
+</tr>
+
+<tr>
+<td>Term</td>
+<td>{{ fee.term }}</td>
+</tr>
+
+</table>
+
+<div class="section-title">
+Fee Breakdown
+</div>
+
+<table>
+
+<tr>
+<td>Current School Fee</td>
+<td>GH₵ {{ "%.2f"|format(fee.school_fee) }}</td>
+</tr>
+
+<tr>
+<td>Previous Outstanding Debt</td>
+<td>GH₵ {{ "%.2f"|format(fee.previous_balance) }}</td>
+</tr>
+
+<tr>
+<td><b>Total Fees Payable</b></td>
+<td><b>GH₵ {{ "%.2f"|format(fee.total_fees) }}</b></td>
+</tr>
+
+<tr>
+<td>Amount Paid</td>
+<td>GH₵ {{ "%.2f"|format(fee.amount_paid) }}</td>
+</tr>
+
+<tr>
+<td>Outstanding Balance</td>
+<td>GH₵ {{ "%.2f"|format(fee.balance) }}</td>
+</tr>
+
+<tr>
+
+<td>Status</td>
+
+<td>
+
+{% if fee.balance == 0 %}
+
+<span style="color:green;font-weight:bold;">
+FULLY PAID
+</span>
+
+{% elif fee.amount_paid > 0 %}
+
+<span style="color:orange;font-weight:bold;">
+PARTIAL PAYMENT
+</span>
+
+{% else %}
+
+<span style="color:red;font-weight:bold;">
+UNPAID
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+</table>
+<table class="summary">
+
+<tr>
+<td style="font-size:16px;"><b>Total Fees</b></td>
+<td style="text-align:right;font-size:16px;">
+<b>GH₵ {{ "%.2f"|format(fee.total_fees) }}</b>
+</td>
+</tr>
+
+<tr>
+<td><b>Paid Today</b></td>
+<td style="text-align:right;">
+<b>GH₵ {{ "%.2f"|format(fee.amount_paid) }}</b>
+</td>
+</tr>
+
+<tr>
+<td><b>Outstanding Balance</b></td>
+<td style="text-align:right;color:red;">
+<b>GH₵ {{ "%.2f"|format(fee.balance) }}</b>
+</td>
+</tr>
+
+</table>
+
+<div class="signature">
+
+<div style="display:flex;justify-content:space-between;">
+
+<div style="text-align:center;">
+
+_____________________
+
+<br>
+
+<b>Cashier's Signature</b>
+
+</div>
+
+<div style="text-align:center;">
+
+_____________________
+
+<br>
+
+<b>Parent/Guardian</b>
+
+</div>
+
+</div>
+
+</div>
+
+<hr style="margin-top:12px;">
+
+<div class="footer">
+
+<p><b>Thank you for your payment.</b></p>
+
+<p>
+This receipt serves as an official acknowledgement of payment made to
+Bridge Montessori School.
+</p>
+
+<p>
+Please keep this receipt for future reference.
+</p>
+
+<h3 style="color:#0056b3;margin:6px 0;">
+BRIDGE MONTESSORI SCHOOL
+</h3>
+
+<p style="margin:3px 0;">
+ACHIEVING MORE
+</p>
+
+<p style="font-size:11px;color:#777;margin-top:6px;">
+Generated by Bridge Montessori School Management System
+</p>
+
+</div>
+
+</div>
+
+</body>
+</html>

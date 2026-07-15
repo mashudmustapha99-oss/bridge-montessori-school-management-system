@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Developer Recovery Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #dc3545;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            margin-top: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .danger-btn {
+            background: #dc3545;
+        }
+
+        .success-btn {
+            background: green;
+        }
+
+        .flash {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Developer Recovery Portal</h1>
+    </div>
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if not session.get("developer_access") %}
+
+            <h2>Developer Login</h2>
+
+            <form method="POST">
+                <label>Developer Username</label>
+                <input type="text" name="username" required>
+
+                <label>Developer Password</label>
+                <input type="password" name="password" required>
+
+                <button type="submit">Access Portal</button>
+            </form>
+
+        {% else %}
+
+            <h2>Developer Tools</h2>
+
+            <a href="/unlock-admin">
+                <button class="success-btn">Unlock Admin Account</button>
+            </a>
+
+            <form method="POST" action="/reset-admin-password">
+                <label>New Admin Password</label>
+                <input type="password" name="new_password" required>
+                <button class="danger-btn" type="submit">
+                    Reset Admin Password
+                </button>
+            </form>
+
+            <form method="POST" action="/change-developer-password">
+                <label>New Developer Password</label>
+                <input type="password" name="developer_password" required>
+                <button type="submit">
+                    Change Developer Password
+                </button>
+            </form>
+
+                       <a href="/backup-database">
+    <button>Backup Database</button>
+</a>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

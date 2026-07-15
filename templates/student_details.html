@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 85%;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .branding {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .branding h1 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .branding p {
+            margin: 5px 0;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .buttons {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .print-btn {
+            background-color: #28a745;
+        }
+
+        .back-btn {
+            background-color: #007bff;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .signature {
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            .buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        @media print {
+            .buttons {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .card, .branding {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Student Details Report</h1>
+    </div>
+
+    <div class="container">
+
+        <div class="buttons">
+            <button class="btn print-btn" onclick="window.print()">Print Report</button>
+            <a href="/students" class="btn back-btn">Back</a>
+        </div>
+
+        <div class="branding">
+            <h1>SCHOOL MANAGEMENT SYSTEM</h1>
+            <p>Excellence Through Education</p>
+            <p>Tel: +233 XX XXX XXXX</p>
+        </div>
+
+        <div class="card">
+            <h2>Student Information</h2>
+
+            <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+            <p><strong>Name:</strong> {{ student.first_name }} {{ student.last_name }}</p>
+            <p><strong>Gender:</strong> {{ student.gender }}</p>
+            <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+            <p><strong>Class:</strong> {{ student.student_class }}</p>
+            <p><strong>Parent Contact:</strong> {{ student.parent_contact }}</p>
+            <p><strong>Emergency Contact:</strong> {{ student.emergency_contact }}</p>
+            <p><strong>Address:</strong> {{ student.address }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Fee Information</h2>
+
+            {% if fee %}
+                <p><strong>Term:</strong> {{ fee.term }}</p>
+                <p><strong>Total Fees:</strong> {{ fee.total_fees }}</p>
+                <p><strong>Amount Paid:</strong> {{ fee.amount_paid }}</p>
+                <p><strong>Balance:</strong> {{ fee.balance }}</p>
+
+                {% if fee.balance == 0 %}
+                    <p><strong>Status:</strong> Paid</p>
+                {% elif fee.amount_paid > 0 %}
+                    <p><strong>Status:</strong> Partial Payment</p>
+                {% else %}
+                    <p><strong>Status:</strong> Unpaid</p>
+                {% endif %}
+            {% else %}
+                <p>No fee record found.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>Payment History</h2>
+
+            {% if payment_history %}
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Total Fees</th>
+                        <th>Amount Paid</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                    </tr>
+
+                    {% for payment in payment_history %}
+                    <tr>
+                        <td>{{ payment.term }}</td>
+                        <td>{{ payment.total_fees }}</td>
+                        <td>{{ payment.amount_paid }}</td>
+                        <td>{{ payment.balance }}</td>
+
+                        <td>
+                            {% if payment.balance == 0 %}
+                                Paid
+                            {% elif payment.amount_paid > 0 %}
+                                Partial Payment
+                            {% else %}
+                                Unpaid
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% else %}
+                <p>No payment history available.</p>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            <p><strong>Printed on:</strong> <script>document.write(new Date().toLocaleDateString())</script></p>
+
+            <div class="signature">
+                <p>__________________________</p>
+                <p>Administrator Signature</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
