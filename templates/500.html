@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bridge Montessori School</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f6f9;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:white;
+width:500px;
+padding:40px;
+text-align:center;
+border-radius:12px;
+box-shadow:0 0 20px rgba(0,0,0,.15);
+}
+
+img{
+width:110px;
+margin-bottom:20px;
+}
+
+h1{
+font-size:70px;
+color:#d9534f;
+}
+
+h2{
+margin:15px 0;
+color:#333;
+}
+
+p{
+color:#666;
+line-height:1.6;
+margin-bottom:30px;
+}
+
+a{
+display:inline-block;
+padding:12px 28px;
+background:#0056b3;
+color:white;
+text-decoration:none;
+border-radius:6px;
+font-weight:bold;
+}
+
+a:hover{
+background:#003f82;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="{{ url_for('static', filename='images/logo.png') }}">
+
+<h1>500</h1>
+
+<h2>Something went wrong</h2>
+
+<p>
+
+An unexpected error occurred.
+
+Please try again later or contact the school administrator.
+
+</p>
+
+<a href="{{ url_for('auth.login') }}">
+
+Return to Login
+
+</a>
+
+</div>
+
+</body>
+
+</html>
