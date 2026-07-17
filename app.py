@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import redirect, url_for
 from config import Config
 from extensions import db
 from models import User, Student, Fee, SchoolFee, AcademicYear
@@ -16,7 +17,7 @@ app.register_blueprint(auth)
 
 @app.route("/")
 def home():
-    return "School Management System"
+    return redirect(url_for("auth.login"))
 
 
 with app.app_context():
