@@ -56,7 +56,5 @@ with app.app_context():
         print("Admin created successfully")
 
 
-print(app.url_map)
-
 if __name__ == "__main__":
     app.run(debug=False)
