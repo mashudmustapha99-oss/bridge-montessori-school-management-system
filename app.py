@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 from config import Config
 from extensions import db
 from models import User, Student, Fee, SchoolFee, AcademicYear
@@ -15,9 +14,23 @@ db.init_app(app)
 app.register_blueprint(auth)
 
 
+# Home Page
 @app.route("/")
 def home():
     return redirect(url_for("auth.login"))
+
+
+# -----------------------------
+# Custom Error Pages
+# -----------------------------
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template("500.html"), 500
 
 
 with app.app_context():
