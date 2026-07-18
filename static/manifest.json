@@ -1,0 +1,15 @@
+{
+  "name": "Bridge Montessori School Management System",
+  "short_name": "Bridge SMS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0056b3",
+  "icons": [
+    {
+      "src": "/static/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
