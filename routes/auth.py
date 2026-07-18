@@ -1206,26 +1206,6 @@ def delete_school_fee(id):
     return redirect(url_for("auth.school_fee_records"))
 
 
-@auth.route("/create-developer-temp")
-def create_developer_temp():
-
-    developer = User.query.filter_by(username="developer").first()
-
-    if developer:
-        return "Developer already exists."
-
-    developer = User(
-        username="developer",
-        password_hash=generate_password_hash("developer123"),
-        role="developer"
-    )
-
-    db.session.add(developer)
-    db.session.commit()
-
-    return "Developer account created successfully."
-
-
 
 
 
