@@ -1160,6 +1160,7 @@ def permanent_delete_student(student_id):
 
 #-----------------------BACKUP DATABASE----------------------------
 
+from flask import current_app, send_file, flash, redirect, url_for, session
 
 @auth.route("/backup-database")
 def backup_database():
@@ -1168,10 +1169,10 @@ def backup_database():
         flash("Unauthorized access.", "error")
         return redirect(url_for("auth.developer_tools"))
 
-    db_path = os.path.join("instance", "school.db")
+    db_path = os.path.join(current_app.instance_path, "school.db")
 
     if not os.path.exists(db_path):
-        flash("Database file not found.", "error")
+        flash(f"Database file not found: {db_path}", "error")
         return redirect(url_for("auth.developer_tools"))
 
     return send_file(
