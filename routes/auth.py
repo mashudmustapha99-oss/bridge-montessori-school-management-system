@@ -1207,6 +1207,18 @@ def delete_school_fee(id):
     return redirect(url_for("auth.school_fee_records"))
 
 
+@auth.route("/check-admin")
+def check_admin():
+    admin = User.query.filter_by(username="admin").first()
 
+    if not admin:
+        return "Admin not found"
 
+    return f"""
+Username: {admin.username}<br>
+Role: {admin.role}<br>
+Failed Attempts: {admin.failed_attempts}<br>
+Locked Until: {admin.locked_until_utc}<br>
+Password Hash: {admin.password_hash}
+"""
 
