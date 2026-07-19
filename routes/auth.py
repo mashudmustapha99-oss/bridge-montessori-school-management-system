@@ -929,9 +929,18 @@ def change_password():
         confirm_password = request.form.get("confirm_password")
 
         # Verify current password
+        print("===================================")
+        print("Session User ID:", session.get("user_id"))
+        print("Session Username:", session.get("username"))
+        print("Database Username:", user.username)
+        print("Current Password Entered:", current_password)
+        print("Password Match:", check_password_hash(user.password_hash, current_password))
+        print("===================================")
+
         if not check_password_hash(user.password_hash, current_password):
             flash("Current password is incorrect.", "error")
-            return redirect(url_for("auth.change_password"))
+            return redirect(url_for("auth.change_password")) 
+   
 
         # Check if new passwords match
         if new_password != confirm_password:
