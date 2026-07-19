@@ -909,30 +909,46 @@ def export_debtors_pdf():
         mimetype="application/pdf"
     )
 
-#---------------CHANGE PASSWORD--------------------------------
+#------------------CHANGE PASSWORD-------------------------
 
 @auth.route("/change-password", methods=["GET", "POST"])
+@login_required
 def change_password():
 
-    user = User.query.first()
+    # Get the currently logged-in user
+    user = User.query.get(session["user_id"])
+
+    if not user:
+        flash("User not found.", "error")
+        return redirect(url_for("auth.login"))
 
     if request.method == "POST":
+
         current_password = request.form.get("current_password")
         new_password = request.form.get("new_password")
         confirm_password = request.form.get("confirm_password")
 
+        # Verify current password
         if not check_password_hash(user.password_hash, current_password):
             flash("Current password is incorrect.", "error")
             return redirect(url_for("auth.change_password"))
 
+        # Check if new passwords match
         if new_password != confirm_password:
             flash("New passwords do not match.", "error")
             return redirect(url_for("auth.change_password"))
 
+        # Minimum password length
         if len(new_password) < 6:
             flash("Password must be at least 6 characters.", "error")
             return redirect(url_for("auth.change_password"))
 
+        # Prevent using the same password again
+        if check_password_hash(user.password_hash, new_password):
+            flash("New password cannot be the same as the current password.", "error")
+            return redirect(url_for("auth.change_password"))
+
+        # Update password
         user.password_hash = generate_password_hash(new_password)
 
         db.session.commit()
@@ -941,7 +957,6 @@ def change_password():
         return redirect(url_for("auth.dashboard"))
 
     return render_template("change_password.html")
-
 
 #---------------DEVELOPER TOOLS-----------------------------
 
